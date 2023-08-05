@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import logo from '../assets/logo-mobile.svg'
 import downIcon from '../assets/icon-chevron-down.svg'
 import upIcon from '../assets/icon-chevron-up.svg'
+import elipsis from '../assets/icon-vertical-ellipsis.svg'
 
 
 const Header = () => {
@@ -17,12 +18,26 @@ const Header = () => {
             <h3 className='hidden md:inline-block font-bold font-sans md:text-2xl'>
                 Dominator
             </h3>
-            <div>
+            <div className='flex items-center'>
                 <h3 className='truncate max-w-[200px] font-bold font-sans text-xl md:text-2xl md:ml-20   '>
                    board name 
                 </h3>
-                <img src={openDropDown ? upIcon : downIcon} alt="dropdown-icon" className='w-3 ml-2 md:hidden ' />
+                <img src={openDropDown ? upIcon : downIcon} alt="dropdown-icon" className='w-3 ml-2 md:hidden cursor-pointer'
+                onClick={() => setOpenDropDown(state => !state)}
+                />
             </div>
+         </div>
+         {/* right side  */}
+         <div className='flex space-x-4 items-center md:space-x-6'>
+             <button className='button '>
+                + Add New Task 
+             </button>
+
+              {/* button for mobile and small screens  */}
+             <button className='button py-1 px-3 md:hidden'>
+                +
+             </button>
+             <img src={elipsis} alt="elipsis" className='cursor-pointer h-6' />
          </div>
             
 
