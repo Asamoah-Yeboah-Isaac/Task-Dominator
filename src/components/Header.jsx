@@ -3,6 +3,7 @@ import logo from '../assets/logo-mobile.svg'
 import downIcon from '../assets/icon-chevron-down.svg'
 import upIcon from '../assets/icon-chevron-up.svg'
 import elipsis from '../assets/icon-vertical-ellipsis.svg'
+import HeaderDropDown from './HeaderDropDown'
 
 
 const Header = () => {
@@ -24,12 +25,12 @@ const Header = () => {
                 </h3>
                 <img src={openDropDown ? upIcon : downIcon} alt="dropdown-icon" className='w-3 ml-2 md:hidden cursor-pointer'
                 onClick={() => setOpenDropDown(state => !state)}
-                />
+                />   
             </div>
          </div>
          {/* right side  */}
          <div className='flex space-x-4 items-center md:space-x-6'>
-             <button className='button '>
+             <button className='hidden md:block button '>
                 + Add New Task 
              </button>
 
@@ -41,8 +42,10 @@ const Header = () => {
          </div>
             
 
-
         </header>
+
+        {/* drop down display for small screens */}
+         {openDropDown && <HeaderDropDown setOpenDropDown={setOpenDropDown}/>}
     </div>
   )
 }
