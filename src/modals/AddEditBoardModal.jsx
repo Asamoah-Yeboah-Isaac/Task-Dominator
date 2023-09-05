@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import crossIcon from '../assets/icon-cross.svg'
 import { useDispatch } from "react-redux";
-import boardSlice from '../redux/boardSlices'
+import boardSlice from '../redux/boardsSlice'
 
 const AddEditBoardModal = ({ setBoardModalOpen, type, title }) => {
     // hooks 
@@ -33,7 +33,7 @@ const AddEditBoardModal = ({ setBoardModalOpen, type, title }) => {
      if(!name.trim()){
         return false
      }
-     for(let i = 0; i < name.length; i++){
+     for(let i = 0; i < newColumns.length; i++){
         if(!newColumns[i].name.trim()){
             return false
         }

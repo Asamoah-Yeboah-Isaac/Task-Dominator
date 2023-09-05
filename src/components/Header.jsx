@@ -5,13 +5,17 @@ import upIcon from '../assets/icon-chevron-up.svg'
 import elipsis from '../assets/icon-vertical-ellipsis.svg'
 import HeaderDropDown from './HeaderDropDown'
 import AddEditBoardModal from '../modals/AddEditBoardModal'
+import { useDispatch, useSelector } from 'react-redux'
 
 
 const Header = ({boardModalOpen, setBoardModalOpen}) => {
+   const dispatch = useDispatch()
   const [openDropDown, setOpenDropDown] = useState(false)
 
 //   dynamic button type 
   const [boardType, setBoadType] = useState()
+  const boards = useSelector((state) => state.boards)
+  const board = boards.find((board) => board.isActive)
 
   return (
     <div className='p-4 fixed left-0 bg-white dark:bg-[#2b2c37] z-50 right-0'>
@@ -25,7 +29,7 @@ const Header = ({boardModalOpen, setBoardModalOpen}) => {
             </h3>
             <div className='flex items-center'>
                 <h3 className='truncate max-w-[200px] font-bold font-sans text-xl md:text-2xl md:ml-20   '>
-                   board name 
+                   {board.name} 
                 </h3>
                 <img src={openDropDown ? upIcon : downIcon} alt="dropdown-icon" className='w-3 ml-2 md:hidden cursor-pointer'
                 onClick={() => setOpenDropDown(state => !state)}
