@@ -1,16 +1,27 @@
 import React, { useState } from "react";
-import {v4 as uuidv4} from 'uuid'
-import crossIcon from '../assets/icon-cross.svg'
+import { v4 as uuidv4 } from "uuid";
+import crossIcon from "../assets/icon-cross.svg";
+import { useSelector } from "react-redux";
 
 const AddEditTaskModal = ({ type, device, setOpenAddEditTask }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [subtask,setSubTask] = useState(
-    [
-      {title: '', isCompleted: false, id:uuidv4()},  
-      {title: '', isCompleted: false, id:uuidv4()},  
-    ]
-  )
+
+  //   check if board.column exist before using "find" on it
+  //   const board = useSelector((state) => state.board.find((board) => board.isActive))
+  const board = useSelector(
+    (state) => state.board && state.board.find((board) => board.isActive)
+  );
+
+  //   check if board exist before accessing column
+  const columns = board ? board.columns : [];
+
+  
+
+  const [subtask, setSubTask] = useState([
+    { title: "", isCompleted: false, id: uuidv4() },
+    { title: "", isCompleted: false, id: uuidv4() },
+  ]);
 
   const onChange = (id, newValue) => {
     setSubTask((pervState) => {
@@ -22,8 +33,9 @@ const AddEditTaskModal = ({ type, device, setOpenAddEditTask }) => {
   };
 
   const onDelete = (id) => {
-    setSubTask((perState) => perState.filter((el) => el.id !== id))
-  }
+    setSubTask((perState) => perState.filter((el) => el.id !== id));
+  };
+//   console.log(columns) 
 
   return (
     <div
@@ -70,22 +82,59 @@ const AddEditTaskModal = ({ type, device, setOpenAddEditTask }) => {
         {/* subtask section */}
         <div className="mt-8 flex flex-col space-y-1">
           <label className="text-sm dark:text-white text-gray-500">
-            Subtasks 
+            Subtasks
           </label>
-          {
-            subtask.map((subtask,index)=>(
-                <div onChange={(e)=>{ 
-                    onChange(subtask.id, e.target.value)
-                }}  key={index} className="flex items-center w-full">
-                  <input type="text" value={subtask.title} className="bg-transparent outline-none border focus:border-0 flex-grow px-4 py-2 rounded-md text-sm border-gray-600 focus:outline-[#635fc7]" placeholder="e.g. 3 hours non-stop coding"/>  
-                  <img  onClick={()=>{
-                     onDelete(subtask.id)
-                  }} src={crossIcon} className="m-4 cursor-pointer"/>   
-                </div>
-
-            ))
-          }
-          
+          {subtask.map((subtask, index) => (
+            <div
+              onChange={(e) => {
+                onChange(subtask.id, e.target.value);
+              }}
+              key={index}
+              className="flex items-center w-full"
+            >
+              <input
+                type="text"
+                value={subtask.title}
+                className="bg-transparent outline-none border focus:border-0 flex-grow px-4 py-2 rounded-md text-sm border-gray-600 focus:outline-[#635fc7]"
+                placeholder="e.g. 3 hours non-stop coding"
+              />
+              <img
+                onClick={() => {
+                  onDelete(subtask.id);
+                }}
+                src={crossIcon}
+                className="m-4 cursor-pointer"
+              />
+            </div>
+          ))}
+          {/* add new suntask button  */}
+          <button
+            onClick={() => {
+              setSubTask((state) => [
+                ...state,
+                { title: "", isCompleted: false, id: uuidv4() },
+              ]);
+            }}
+            className="w-full items-center dark:text-[#635fc7] dark:bg-white text-white bg-[#635fc7] py-2 rounded-full"
+          >
+            + Add New Subtask
+          </button>
+        </div>
+        {/* current status section  */}
+        <div className="mt-8 flex flex-col space-y-3">
+          <label className="text-sm dark:text-white text-gray-50">
+            Current status
+          </label>
+          <select className="select-status flex flex-grow px-4 py-2 rounded-md text-sm bg-transparent focus:border-0 border border-gray-300 focus:outline-[#635fc7] outline-none">
+            {columns.map((column, index) => (
+              <option value={column.name} key={index} >
+                {column.name}
+              </option>
+            ))}
+          </select>
+          <button className="w-full items-center text-white bg-[#635fc7] py-2 rounded-full">
+            {type === 'Edit' ? 'Save Edit' : 'Create Task'}
+          </button>
         </div>
       </div>
     </div>
