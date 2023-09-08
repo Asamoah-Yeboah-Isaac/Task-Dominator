@@ -26,12 +26,11 @@ const AddEditTaskModal = ({
   const columns = board ? board.columns : [];
 
   const col = columns.find((col, index) => index === pervcolIndex);
-//   const [status, setStatus] = useState(columns[pervcolIndex].name);
+  //   const [status, setStatus] = useState(columns[pervcolIndex].name);
   const status = col ? col.name : "";
   const [newColIndex, setNewColIndex] = useState(pervcolIndex);
 
-
-//   subtask hook 
+  //   subtask hook
   const [subtask, setSubTask] = useState([
     { title: "", isCompleted: false, id: uuidv4() },
     { title: "", isCompleted: false, id: uuidv4() },
@@ -197,8 +196,8 @@ const AddEditTaskModal = ({
             onClick={() => {
               const isValid = validate();
               if (isValid) {
-                onsubmit(type)
-                setOpenAddEditTask(false)
+                onsubmit(type);
+                setOpenAddEditTask(false);
               }
             }}
             className="w-full items-center text-white bg-[#635fc7] py-2 rounded-full"

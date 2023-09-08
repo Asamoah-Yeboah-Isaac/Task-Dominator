@@ -7,14 +7,16 @@ import HeaderDropDown from "./HeaderDropDown";
 import AddEditBoardModal from "../modals/AddEditBoardModal";
 import { useDispatch, useSelector } from "react-redux";
 import AddEditTaskModal from "../modals/AddEditTaskModal";
+import EllipseMenu from "./EllipseMenu";
 
 const Header = ({ boardModalOpen, setBoardModalOpen }) => {
   const dispatch = useDispatch();
   const [openDropDown, setOpenDropDown] = useState(false);
   const [openAddEditTask, setOpenAddEditTask] = useState();
+  const [isEllipseOpen, setIsEllipseOpen] = useState(false)
 
   //   dynamic button type
-  const [boardType, setBoadType] = useState();
+  const [boardType, setBoardType] = useState();
   const boards = useSelector((state) => state.boards);
   const board = boards.find((board) => board.isActive);
 
@@ -47,7 +49,14 @@ const Header = ({ boardModalOpen, setBoardModalOpen }) => {
           <button onClick={()=>{
             setOpenAddEditTask(state => !state)
           }} className="button py-1 px-3 md:hidden">+</button>
-          <img src={elipsis} alt="elipsis" className="cursor-pointer h-6" />
+          <img src={elipsis} onClick={()=>{
+            setBoardType('edit')
+            setOpenDropDown(false)
+            setIsEllipseOpen(state => !state)
+          }} alt="elipsis" className="cursor-pointer h-6" />
+
+          {/* ellipse section  */}
+          { isEllipseOpen && <EllipseMenu type='Boards'/> }
         </div>
       </header>
 
