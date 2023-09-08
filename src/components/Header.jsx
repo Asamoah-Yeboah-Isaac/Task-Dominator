@@ -64,7 +64,7 @@ const Header = ({ boardModalOpen, setBoardModalOpen }) => {
           setBoardModalOpen={setBoardModalOpen}
         />
       )}
-      {openAddEditTask && <AddEditTaskModal setOpenAddEditTask={setOpenAddEditTask}    device='mobile' />}
+      {openAddEditTask && <AddEditTaskModal setOpenAddEditTask={setOpenAddEditTask}    device='mobile' type='add' />}
     </div>
   );
 };

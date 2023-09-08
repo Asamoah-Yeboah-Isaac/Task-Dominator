@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4, validate } from "uuid";
 import crossIcon from "../assets/icon-cross.svg";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import boardsSlice from "../redux/boardsSlice";
 
-const AddEditTaskModal = ({ type, device, setOpenAddEditTask }) => {
+const AddEditTaskModal = ({ type, device, taskIndex, setOpenAddEditTask, pervcolIndex = 0, }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [isValid, setIsValid] = useState(true)
+  const dispatch = useDispatch()
 
   //   check if board.column exist before using "find" on it
   //   const board = useSelector((state) => state.board.find((board) => board.isActive))
@@ -15,6 +18,10 @@ const AddEditTaskModal = ({ type, device, setOpenAddEditTask }) => {
 
   //   check if board exist before accessing column
   const columns = board ? board.columns : [];
+
+  const col = columns.find((col, index) => index === pervcolIndex)
+  const [status, setStatus] = useState(columns[pervcolIndex].name)
+  const [newColIndex, setNewColIndex]= useState(pervcolIndex)
 
   
 
@@ -32,10 +39,54 @@ const AddEditTaskModal = ({ type, device, setOpenAddEditTask }) => {
     });
   };
 
+  const onchangeStatus = () => {
+    setStatus(e.target.value)
+    setNewColIndex(e.target.selectedIndex)
+  }
+
   const onDelete = (id) => {
     setSubTask((perState) => perState.filter((el) => el.id !== id));
   };
 //   console.log(columns) 
+
+const validate =() => {
+    setIsValid(false)
+    if(!title.trim()){
+       return false
+    }
+    for(let i = 0; i < subtask.length; i++){
+       if(!subtask[i].name.trim()){
+           return false
+       }
+    }
+    setIsValid(true)
+    return true
+ }
+
+ const onsubmit=(type)=>{
+    if(type === 'add'){
+        dispatch(boardsSlice.actions.addTask)({
+            title,
+            description,
+            subtask,
+            status, 
+            newColIndex
+        })
+    } else{
+        dispatch(boardsSlice.actions.editTask(
+            {
+                title,
+                description,
+                subtask,
+                status,
+                taskIndex,
+                pervcolIndex,
+                newColIndex,
+                
+            }
+        ))
+    }
+ }
 
   return (
     <div
@@ -125,14 +176,19 @@ const AddEditTaskModal = ({ type, device, setOpenAddEditTask }) => {
           <label className="text-sm dark:text-white text-gray-50">
             Current status
           </label>
-          <select className="select-status flex flex-grow px-4 py-2 rounded-md text-sm bg-transparent focus:border-0 border border-gray-300 focus:outline-[#635fc7] outline-none">
+          <select value={status} onChange={(e) =>onchangeStatus(e)} className="select-status flex flex-grow px-4 py-2 rounded-md text-sm bg-transparent focus:border-0 border border-gray-300 focus:outline-[#635fc7] outline-none">
             {columns.map((column, index) => (
               <option value={column.name} key={index} >
                 {column.name}
               </option>
             ))}
           </select>
-          <button className="w-full items-center text-white bg-[#635fc7] py-2 rounded-full">
+          <button onClick={() => {
+            const isValid = validate() 
+            if(isValid){
+                onsubmit(type) 
+            }
+          }} className="w-full items-center text-white bg-[#635fc7] py-2 rounded-full">
             {type === 'Edit' ? 'Save Edit' : 'Create Task'}
           </button>
         </div>
