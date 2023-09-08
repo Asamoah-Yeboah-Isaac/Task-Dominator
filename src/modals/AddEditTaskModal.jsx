@@ -62,7 +62,7 @@ const AddEditTaskModal = ({
       return false;
     }
     for (let i = 0; i < subtask.length; i++) {
-      if (!subtask[i].name.trim()) {
+      if (!subtask[i].title.trim()) {
         return false;
       }
     }
@@ -197,7 +197,8 @@ const AddEditTaskModal = ({
             onClick={() => {
               const isValid = validate();
               if (isValid) {
-                onsubmit(type);
+                onsubmit(type)
+                setOpenAddEditTask(false)
               }
             }}
             className="w-full items-center text-white bg-[#635fc7] py-2 rounded-full"
