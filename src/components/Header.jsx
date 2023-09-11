@@ -107,7 +107,7 @@ const Header = ({ boardModalOpen, setBoardModalOpen }) => {
           type="add"
         />
       )}
-      {isDeleteModalOpen && <DeleteModal/>}
+      {isDeleteModalOpen && <DeleteModal setIsDeleteModalOpen={setIsDeleteModalOpen} title={board.name} type='board'/>}
     </div>
   );
 };
