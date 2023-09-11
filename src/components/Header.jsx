@@ -8,18 +8,29 @@ import AddEditBoardModal from "../modals/AddEditBoardModal";
 import { useDispatch, useSelector } from "react-redux";
 import AddEditTaskModal from "../modals/AddEditTaskModal";
 import EllipseMenu from "./EllipseMenu";
+import DeleteModal from "../modals/DeleteModal";
 
 const Header = ({ boardModalOpen, setBoardModalOpen }) => {
   const dispatch = useDispatch();
   const [openDropDown, setOpenDropDown] = useState(false);
   const [openAddEditTask, setOpenAddEditTask] = useState();
-  const [isEllipseOpen, setIsEllipseOpen] = useState(false)
+  const [isEllipseOpen, setIsEllipseOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   //   dynamic button type
   const [boardType, setBoardType] = useState();
   const boards = useSelector((state) => state.boards);
   const board = boards.find((board) => board.isActive);
 
+  const setOpenEditModal = () => {
+    setBoardModalOpen(true);
+    setIsEllipseOpen(false);
+  };
+
+  const setOpenDeleteModal = () => {
+    setIsDeleteModalOpen(true);
+    setIsEllipseOpen(false);
+  };
   return (
     <div className="p-4 fixed left-0 bg-white dark:bg-[#2b2c37] z-50 right-0">
       <header className="flex justify-between dark:text-white items-center">
@@ -46,17 +57,33 @@ const Header = ({ boardModalOpen, setBoardModalOpen }) => {
           <button className="hidden md:block button ">+ Add New Task</button>
 
           {/* button for mobile and small screens  */}
-          <button onClick={()=>{
-            setOpenAddEditTask(state => !state)
-          }} className="button py-1 px-3 md:hidden">+</button>
-          <img src={elipsis} onClick={()=>{
-            setBoardType('edit')
-            setOpenDropDown(false)
-            setIsEllipseOpen(state => !state)
-          }} alt="elipsis" className="cursor-pointer h-6" />
+          <button
+            onClick={() => {
+              setOpenAddEditTask((state) => !state);
+            }}
+            className="button py-1 px-3 md:hidden"
+          >
+            +
+          </button>
+          <img
+            src={elipsis}
+            onClick={() => {
+              setBoardType("edit");
+              setOpenDropDown(false);
+              setIsEllipseOpen((state) => !state);
+            }}
+            alt="elipsis"
+            className="cursor-pointer h-6"
+          />
 
           {/* ellipse section  */}
-          { isEllipseOpen && <EllipseMenu type='Boards'/> }
+          {isEllipseOpen && (
+            <EllipseMenu
+              setOpenEditModal={setOpenEditModal}
+              setOpenDeleteModal={setOpenDeleteModal}
+              type="Boards"
+            />
+          )}
         </div>
       </header>
 
@@ -73,7 +100,14 @@ const Header = ({ boardModalOpen, setBoardModalOpen }) => {
           setBoardModalOpen={setBoardModalOpen}
         />
       )}
-      {openAddEditTask && <AddEditTaskModal setOpenAddEditTask={setOpenAddEditTask}    device='mobile' type='add' />}
+      {openAddEditTask && (
+        <AddEditTaskModal
+          setOpenAddEditTask={setOpenAddEditTask}
+          device="mobile"
+          type="add"
+        />
+      )}
+      {isDeleteModalOpen && <DeleteModal/>}
     </div>
   );
 };
