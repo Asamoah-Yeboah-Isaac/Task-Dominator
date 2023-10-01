@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import AddEditTaskModal from "../modals/AddEditTaskModal";
 import EllipseMenu from "./EllipseMenu";
 import DeleteModal from "../modals/DeleteModal";
+import boardsSlice from "../redux/boardsSlice";
 
 const Header = ({ boardModalOpen, setBoardModalOpen }) => {
   const dispatch = useDispatch();
@@ -31,6 +32,18 @@ const Header = ({ boardModalOpen, setBoardModalOpen }) => {
     setIsDeleteModalOpen(true);
     setIsEllipseOpen(false);
   };
+
+  const onDeleteBtnClick = () =>{
+     dispatch( boardsSlice.actions.deleteBoard())
+     dispatch(boardsSlice.actions.setBoardActive({index : 0}))
+     setIsDeleteModalOpen(false) 
+  }
+
+  const onDropdownClick = () => {
+     setOpenDropDown ( state => !state)
+     setIsEllipseOpen(false)
+     setBoardType('add')
+  }
   return (
     <div className="p-4 fixed left-0 bg-white dark:bg-[#2b2c37] z-50 right-0">
       <header className="flex justify-between dark:text-white items-center">
@@ -48,13 +61,15 @@ const Header = ({ boardModalOpen, setBoardModalOpen }) => {
               src={openDropDown ? upIcon : downIcon}
               alt="dropdown-icon"
               className="w-3 ml-2 md:hidden cursor-pointer"
-              onClick={() => setOpenDropDown((state) => !state)}
+              onClick={onDropdownClick}
             />
           </div>
         </div>
         {/* right side  */}
         <div className="flex space-x-4 items-center md:space-x-6">
-          <button className="hidden md:block button ">+ Add New Task</button>
+          <button onClick={() => {
+              setOpenAddEditTask((state) => !state);
+            }} className="hidden md:block button ">+ Add New Task</button>
 
           {/* button for mobile and small screens  */}
           <button
@@ -107,7 +122,7 @@ const Header = ({ boardModalOpen, setBoardModalOpen }) => {
           type="add"
         />
       )}
-      {isDeleteModalOpen && <DeleteModal setIsDeleteModalOpen={setIsDeleteModalOpen} title={board.name} type='board'/>}
+      {isDeleteModalOpen && <DeleteModal setIsDeleteModalOpen={setIsDeleteModalOpen} onDeleteBtnClick={onDeleteBtnClick} title={board.name} type='board'/>}
     </div>
   );
 };

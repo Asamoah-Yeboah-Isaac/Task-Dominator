@@ -11,10 +11,10 @@ const DeleteModal = ({type, title, onDeleteBtnClick,setIsDeleteModalOpen}) => {
     }}>
 
         {/* delete modal  */}
-        <div className='scrollbar-hide overflow-y-scroll max-h-[95vh] my-auto bg-white dark:bg-[#2b2c37] text-black dark:text-white w-full px-8 py-8 rounded-xl'>
+        <div className='scrollbar-hide overflow-y-scroll max-w-mdrf max-h-[95vh] my-auto bg-white dark:bg-[#2b2c37] text-black dark:text-white w-full px-8 py-8 rounded-xl'>
             <h3 className='font-bold text-red-500 text-xl'>
                 Delete this {type} ?
-            </h3>
+            </h3> 
             {type === 'task' ? (
                 <p className='text-gray-500 font-semibold tracking-wider text-sm pt-6 '>
                      Are you sure you want to delete this "{title}"
@@ -26,6 +26,14 @@ const DeleteModal = ({type, title, onDeleteBtnClick,setIsDeleteModalOpen}) => {
                 This action will remove all columns and tasks and cannot be reserved.
             </p>
             }
+            <div className='flex w-full mt-4 items-center justify-center space-x-4' onClick={onDeleteBtnClick}>
+              <button  className=' w-full items-center text-white hover:opacity-75 font-semibold bg-red-500 py-2 rounded-full'>
+                Delete
+              </button>
+              <button  className=' w-full items-center text-[#635fc7] hover:opacity-75 font-semibold bg-[#635fc71a] py-2 rounded-full' onClick={() => setIsDeleteModalOpen(false)}>
+                Cancel
+              </button>
+            </div>
 
         </div>
 
