@@ -13,6 +13,7 @@ const App = () => {
     dispatch(boardsSlice.actions.setBoardActive({ index: 0 }));
   }
 
+  
   const [boardModalOpen, setBoardModalOpen] = useState(false);
   return (
     <div className="overflow-hidden overflow-x-scroll">
