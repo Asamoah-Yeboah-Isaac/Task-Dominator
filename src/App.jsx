@@ -3,6 +3,8 @@ import Header from "./components/Header";
 import { useDispatch, useSelector } from "react-redux";
 import boardsSlice from "./redux/boardsSlice";
 import EmptyBoard from "./components/EmptyBoard";
+import Center from "./components/Center";
+
 
 const App = () => {
   const dispatch = useDispatch();
@@ -24,7 +26,8 @@ const App = () => {
         boardModalOpen={boardModalOpen}
         setBoardModalOpen={setBoardModalOpen}
       />
-      {/* <Center/>  */}
+      <Center  boardModalOpen={boardModalOpen}
+        setBoardModalOpen={setBoardModalOpen}/> 
       </>
       :
       <> 
