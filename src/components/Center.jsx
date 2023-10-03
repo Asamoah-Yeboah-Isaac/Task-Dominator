@@ -1,38 +1,49 @@
-import React, { useEffect, useState } from 'react'
-import SideBar from './SideBar'
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import SideBar from "./SideBar";
+import Column from "./Column";
 
-
-const Center = ({boardModalOpen, setBoardModalOpen}) => {
-const [windowSize, setWindowSize] = useState([
+const Center = ({ boardModalOpen, setBoardModalOpen }) => {
+  const [windowSize, setWindowSize] = useState([
     window.innerWidth,
-    window.innerHeight
-])
+    window.innerHeight,
+  ]);
 
-cost [isSideBarOpen, setIsSideBarOpen] = useState(true)
-//track screen size
-useEffect(()=>{
-  const handleWindowResize =()=>{
-    setWindowSize([window.innerWidth, window.innerHeight])
-  }
-  window.addEventListener('resize' , handleWindowResize)
+  const [isSideBarOpen, setIsSideBarOpen] = useState(true);
+  // const boards = useSelector((state) => state)
+  const boards = useSelector((state) => state.boardReducer);
+  // const board =boards.find((board) => board.isActive === true)
+  const board = boards && boards.find((board) => board.isActive === true);
+  // const columns = board.columns
+  const columns = board ? board.columns : [];
+  //track screen size
+  useEffect(() => {
+    const handleWindowResize = () => {
+      setWindowSize([window.innerWidth, window.innerHeight]);
+    };
+    window.addEventListener("resize", handleWindowResize);
 
-  return() =>{
-    window.removeEventListener('resize', handleWindowResize)
-  }
-})
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
 
   return (
-    <div className={windowSize[0] >= 768 && iSideBarOpen? 'bg-[#f4f7fd] scrollbar-hide h-screen flex dark:bg-[#20212c] overflow-x-scroll gap-6 ml-[261px]' : 'bg-[#f4f7fd] scrollbar-hide h-screen flex dark:bg-[#20212c] overflow-x-scroll gap-6' }>
-       {
-        windowSize[0] >= 768 && (
-            <SideBar/>
-        )
-       }
+    <div
+      className={
+        windowSize[0] >= 768 && iSideBarOpen
+          ? "bg-[#f4f7fd] scrollbar-hide h-screen flex dark:bg-[#20212c] overflow-x-scroll gap-6 ml-[261px]"
+          : "bg-[#f4f7fd] scrollbar-hide h-screen flex dark:bg-[#20212c] overflow-x-scroll gap-6"
+      }
+    >
+      {windowSize[0] >= 768 && <SideBar />}
 
-       {/* column section  */}
-        
+      {/* column section  */}
+      {columns.map((col, index) => (
+        <Column key={index} colIndex={index} />
+      ))}
     </div>
-  )
-}
+  );
+};
 
-export default Center
+export default Center;
