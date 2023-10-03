@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { shuffle } from 'lodash' 
+import { shuffle } from 'lodash'
 
-const Column = ({colIndex}) => {
+const Column = ({colIndex, columns}) => {
     const colors = [
         'bg-red-500',
         'bg-orange-500',
@@ -19,18 +19,20 @@ const Column = ({colIndex}) => {
     const dispatch = useDispatch()
     const boards = useSelector(state => state.boards)
     const board = boards.find(board => board.isActive)
-    const col = board.columns.find((col, i) => i === colIndex)
+    const col = columns.find((col, i) => i === colIndex) //board.
      
     useEffect(() => {
         setColor(shuffle(colors).pop())
     },[dispatch])
+
+  
 
 
   return (
     <div className='scrollbar-hide mx-5 pt-[90px] min-w-[280px]'>
         <p className='font-semibold flex items-center gap-2 tracking-widest md:tracking-[2em] text-[#828fa3]'>
              <div className={`rounded-full w-4 h-4 ${color}`}>
-
+              {col.name} {col.tasks.length}
              </div>
         </p>
     </div>
@@ -38,3 +40,6 @@ const Column = ({colIndex}) => {
 }
 
 export default Column
+
+
+

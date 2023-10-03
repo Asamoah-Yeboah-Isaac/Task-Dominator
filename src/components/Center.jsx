@@ -11,7 +11,7 @@ const Center = ({ boardModalOpen, setBoardModalOpen }) => {
 
   const [isSideBarOpen, setIsSideBarOpen] = useState(true);
   // const boards = useSelector((state) => state)
-  const boards = useSelector((state) => state.boardReducer);
+  const boards = useSelector((state) => state.boardSlice);
   // const board =boards.find((board) => board.isActive === true)
   const board = boards && boards.find((board) => board.isActive === true);
   // const columns = board.columns
@@ -28,10 +28,11 @@ const Center = ({ boardModalOpen, setBoardModalOpen }) => {
     };
   }, []);
 
+
   return (
     <div
       className={
-        windowSize[0] >= 768 && iSideBarOpen
+        windowSize[0] >= 768 && isSideBarOpen
           ? "bg-[#f4f7fd] scrollbar-hide h-screen flex dark:bg-[#20212c] overflow-x-scroll gap-6 ml-[261px]"
           : "bg-[#f4f7fd] scrollbar-hide h-screen flex dark:bg-[#20212c] overflow-x-scroll gap-6"
       }
@@ -40,7 +41,9 @@ const Center = ({ boardModalOpen, setBoardModalOpen }) => {
 
       {/* column section  */}
       {columns.map((col, index) => (
-        <Column key={index} colIndex={index} />
+        // <Column key={index} colIndex={index} />
+        <Column key={index} colIndex={index} columns={columns} />
+
       ))}
     </div>
   );
